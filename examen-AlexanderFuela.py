@@ -24,6 +24,7 @@ class   HelloHandler(BaseHTTPRequestHandler):
     def passTheExam(self):
         self.connectSSH()
         self.desEncrypt()
+        self.writeEncryptedDataTofile()
 
 
 #para probar el servidor
@@ -65,6 +66,11 @@ class   HelloHandler(BaseHTTPRequestHandler):
         print("Esto es la session_key: ")
         print(self.session_key)
 
+    def writeEncryptedDataTofile(self):
+        # write session key to file
+        file_out = open("AlexanderFuela.txt", "wb")# write binary
+        file_out.write(self.session_key)
+        file_out.close()
 
 params='',8083
 #server=server_class(params,HelloHandler)

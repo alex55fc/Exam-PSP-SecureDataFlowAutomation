@@ -1,0 +1,10 @@
+{
+"smtpPort" : 1023,
+"ftpPort" : 23,
+"ftpUser" : "dostres",
+"ftpPassword" : "dostresdos",
+"sshPort" : 2223,
+"sshUser" : "tresdos",
+"sshPassword" : "tresdos",
+"msg" : "Viva don bosco"
+}
