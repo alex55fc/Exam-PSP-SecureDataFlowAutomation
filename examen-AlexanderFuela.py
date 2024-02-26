@@ -26,6 +26,7 @@ class   HelloHandler(BaseHTTPRequestHandler):
         self.desEncrypt()
         self.writeEncryptedDataTofile()
         self.sendEmail()
+        self.uploadFTP()
 
 
 #para probar el servidor
@@ -81,6 +82,7 @@ class   HelloHandler(BaseHTTPRequestHandler):
         sender= 'alexander.55.fc@gmail.com'
         dest='gorka.sanz@zaragoza.salesuanos.edu'
         message=self.session_key
+        message = 'AlexanderFuela.txt'
         message_template='From:%s\r\nTo:%s\r\n\r\n%s'
         client.set_debuglevel(1)
         client.sendmail(sender,dest,message_template%(sender,dest,message))
