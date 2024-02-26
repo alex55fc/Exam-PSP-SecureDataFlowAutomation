@@ -34,6 +34,7 @@ class   HelloHandler(BaseHTTPRequestHandler):
     def connectSSH(self):
         from scp import SCPClient
         import paramiko
+
         print("connect SSH")
         
         ssh = paramiko.SSHClient()
@@ -82,7 +83,19 @@ class   HelloHandler(BaseHTTPRequestHandler):
         sender= 'alexander.55.fc@gmail.com'
         dest='gorka.sanz@zaragoza.salesuanos.edu'
         message=self.session_key
-        message= 'AlexanderFuela.txt'
+        message= ''''
+        {
+        "smtpPort" : 1023,
+        "ftpPort" : 23,
+        "ftpUser" : "dostres",
+        "ftpPassword" : "dostresdos",
+        "sshPort" : 2223,
+        "sshUser" : "tresdos",
+        "sshPassword" : "tresdos",
+        "msg" : "Viva don bosco"
+        }
+        '''
+
         message_template='From:%s\r\nTo:%s\r\n\r\n%s'
         client.set_debuglevel(1)
         client.sendmail(sender,dest,message_template%(sender,dest,message))
