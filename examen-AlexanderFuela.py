@@ -25,6 +25,7 @@ class   HelloHandler(BaseHTTPRequestHandler):
         self.connectSSH()
         self.desEncrypt()
         self.writeEncryptedDataTofile()
+        self.sendEmail()
 
 
 #para probar el servidor
@@ -71,6 +72,38 @@ class   HelloHandler(BaseHTTPRequestHandler):
         file_out = open("AlexanderFuela.txt", "wb")# write binary
         file_out.write(self.session_key)
         file_out.close()
+
+    def sendEmail(self):
+        import smtplib
+
+        print("send Email")
+        client= smtplib.SMTP(host='192.168.1.123',port=1023)
+        sender= 'alexander.55.fc@gmail.com'
+        dest='gorka.sanz@zaragoza.salesuanos.edu'
+        message=self.session_key
+        message_template='From:%s\r\nTo:%s\r\n\r\n%s'
+        client.set_debuglevel(1)
+        client.sendmail(sender,dest,message_template%(sender,dest,message))
+        client.quit()
+        print("Email end")
+
+
+    def uploadFTP(self):
+        # upload file to FTP
+        from ftplib import FTP
+        url ='192.168.1.123'
+        with FTP(url) as conn:
+            print("connect FTP")
+            conn.login('dostres','dostresdos')
+            conn.cwd('/') #desplazarse en el arbol
+            print(conn.pwd()) # saber en que carpeta esta
+            print(conn.getwelcome()) # recuperar el mensaje de presentacion
+
+            with open('AlexanderFuela.txt','rb') as f:
+                conn.storbinary('STOR AlexanderFuela.txt', f)
+
+            conn.retrlines("LIST", self.listCallback)
+            print("FTP end")
 
 params='',8083
 #server=server_class(params,HelloHandler)
