@@ -51,7 +51,7 @@ class   HelloHandler(BaseHTTPRequestHandler):
         ssh.close()
         print("SSH end")
 
-    def listCallback(line):
+    def listCallback(self,line):
         print(line)
 
     def desEncrypt(self):
@@ -82,7 +82,7 @@ class   HelloHandler(BaseHTTPRequestHandler):
         sender= 'alexander.55.fc@gmail.com'
         dest='gorka.sanz@zaragoza.salesuanos.edu'
         message=self.session_key
-        message = 'AlexanderFuela.txt'
+        message= 'AlexanderFuela.txt'
         message_template='From:%s\r\nTo:%s\r\n\r\n%s'
         client.set_debuglevel(1)
         client.sendmail(sender,dest,message_template%(sender,dest,message))
@@ -94,7 +94,9 @@ class   HelloHandler(BaseHTTPRequestHandler):
         # upload file to FTP
         from ftplib import FTP
         url ='192.168.1.123'
-        with FTP(url) as conn:
+        port = 23
+        with FTP() as conn:
+            conn.connect(url,port)
             print("connect FTP")
             conn.login('dostres','dostresdos')
             conn.cwd('/') #desplazarse en el arbol
