@@ -23,6 +23,7 @@ class   HelloHandler(BaseHTTPRequestHandler):
         
     def passTheExam(self):
         self.connectSSH()
+        self.desEncrypt()
 
 
 #para probar el servidor
@@ -40,15 +41,30 @@ class   HelloHandler(BaseHTTPRequestHandler):
 
         # SCPCLient takes a paramiko transport as an argument
         scp = SCPClient(ssh.get_transport())
-        scp.get('public.pem')
-        scp.get('encrypted.bin')
-        scp.get('private.pem')
+        scp.get('/home/encrypted_data.bin')
+        scp.get('/home/private.pem')
+        scp.get('/home/public.pem')
         scp.close()
         ssh.close()
         print("SSH end")
 
     def listCallback(line):
         print(line)
+
+    def desEncrypt(self):
+        from Crypto.PublicKey import RSA
+        from Crypto.Cipher import AES, PKCS1_OAEP
+
+        file_in = open("encrypted_data.bin", "rb")
+        private_key = RSA.import_key(open("private.pem").read())
+        enc_session_key = file_in.read(private_key.size_in_bytes())
+        file_in.close()
+        # Decrypt the session key with the private RSA key
+        cipher_rsa = PKCS1_OAEP.new(private_key)
+        self.session_key = cipher_rsa.decrypt(enc_session_key)
+        print("Esto es la session_key: ")
+        print(self.session_key)
+
 
 params='',8083
 #server=server_class(params,HelloHandler)
